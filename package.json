@@ -1,0 +1,26 @@
+{
+  "name": "font-pack",
+  "version": "0.1.0",
+  "author": "zzzgydi",
+  "license": "MIT",
+  "description": "A font tool helps to convert ttf to woff and woff2",
+  "source": "src/lib.ts",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node12 --outfile=dist/main.js",
+    "test": "yarn build && node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/mkdirp": "^1.0.2",
+    "@types/wawoff2": "^1.0.0",
+    "esbuild": "^0.14.11",
+    "fs-extra": "^10.0.0",
+    "mkdirp": "^1.0.4",
+    "pako": "^2.0.4",
+    "wawoff2": "^2.0.0"
+  },
+  "engines": {
+    "node": ">= 12"
+  }
+}

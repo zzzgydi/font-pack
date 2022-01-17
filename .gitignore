@@ -1,0 +1,7 @@
+node_modules
+dist
+yarn.lock
+.DS_Store
+*.log
+fonts/*
+!/fonts/*.ttf

@@ -5,22 +5,42 @@
   "license": "MIT",
   "description": "A font tool helps to convert ttf to woff and woff2",
   "source": "src/lib.ts",
-  "main": "src/main.ts",
+  "main": "dist/lib.ts",
+  "types": "dist/lib.d.ts",
+  "bin": {
+    "font-pack": "dist/cli.js"
+  },
+  "keywords": [
+    "font",
+    "ttf",
+    "woff",
+    "woff2",
+    "convertor"
+  ],
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --platform=node --target=node12 --outfile=dist/main.js",
-    "test": "yarn build && node dist/main.js"
+    "build:cli": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js",
+    "build:lib": "esbuild src/lib.ts --bundle --platform=node --outfile=dist/lib.js",
+    "build:type": "tsc src/lib.ts -d --emitDeclarationOnly --outDir dist",
+    "build": "npm run build:lib && npm run build:cli",
+    "test": "node dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zzzgydi/font-pack"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/mkdirp": "^1.0.2",
     "@types/wawoff2": "^1.0.0",
+    "cac": "^6.7.12",
     "esbuild": "^0.14.11",
     "fs-extra": "^10.0.0",
-    "mkdirp": "^1.0.4",
     "pako": "^2.0.4",
     "wawoff2": "^2.0.0"
   },
   "engines": {
     "node": ">= 12"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

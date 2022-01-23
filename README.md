@@ -1,24 +1,51 @@
 # Font Pack
 
-A simple font tool helps to convert ttf to woff and woff2.
+A tool helps to generate ttf, woff, woff2 and css file at the same time. Supports splitting font files on demand.
+
+一个可以根据常用字体格式文件，直接生成 ttf、woff 和 woff2 字体文件、以及包含该字体`font-face`定义的 css 文件。同时可以根据需要的字符集裁剪字体文件，实现类似`font-spider`的功能。
 
 ## Usage
 
-Use as cli tool:
+### Only generate web font
 
 ```shell
-font-pack a.ttf b.ttf -o outdir
+npx font-pack test.ttf -o dist
 ```
 
-Use as npm dependency:
+Output Files:
 
-```js
-import fontPack from "font-pack";
+```txt
+dist/test.css
+dist/test.tff
+dist/test.woff
+dist/test.woff2
+```
 
-await fontPack("a.ttf");
+### Split font file
+
+This will generate two font files, one only contain the charset required, and the other contains the rest charset of the font itself.
+
+```shell
+npx font-pack test.ttf --split-name test2 --split-chars abcdefg1234567
+```
+
+Output Files:
+
+```txt
+dist/test.css
+dist/test.tff
+dist/test.woff
+dist/test.woff2
+dist/test2.css
+dist/test2.tff
+dist/test2.woff
+dist/test2.woff2
 ```
 
 ## Acknowledgement
 
-- [fontello/ttf2woff](https://github.com/fontello/ttf2woff): ttf2woff converts TTF fonts to WOFF format.
-- [fontello/wawoff2](https://github.com/fontello/wawoff2): Google's woff2 build for node.js, using WebAssembly.
+- [kekee000/fonteditor-core](https://github.com/kekee000/fonteditor-core): fonteditor core functions.
+
+## License
+
+MIT License. See [here](./LICENSE) for details.

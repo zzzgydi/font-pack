@@ -19,7 +19,7 @@ export async function resolveOptions(
   const basename = path.basename(input);
   const fileNames = basename.split(".");
   const fontType = fileNames.pop();
-  const name = fileNames.join(".");
+  const name = options.name || fileNames.join(".");
 
   if (!FontTypes.includes(fontType)) {
     throw new Error(`unsupport font type "${fontType}"`);

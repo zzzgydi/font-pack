@@ -8,7 +8,7 @@ import { Options } from "../src/utils/types";
 const cli = cac("font-pack");
 
 cli
-  .command("[...files]", "ttf paths")
+  .command("[...files]", "font files")
   .option(
     "-n, --name <name>",
     "rename the font name (only valid when input single file)"
@@ -17,11 +17,11 @@ cli
     "-o, --outdir <outdir>",
     "set the output dir (default the file's dir)"
   )
-  .option("--css", "generate the related css file")
-  .option("--no-css", "do not generate the related css file")
   .option("--split-name <splitName>", "set the split font name")
   .option("--split-txt <splitByTxt>", "set the split chars text path")
   .option("--split-chars <splitByChars>", "set the split chars string")
+  .option("--css", "generate the related css file")
+  .option("--no-css", "do not generate the related css file")
   .option("--hinting", "keep ttf hinting or not")
   .option("--no-hinting", "do not keep ttf hinting or not")
   .option("--transform", "transform compound glyph to simple")

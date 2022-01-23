@@ -1,5 +1,7 @@
 # Font Pack
 
+[![npm](https://img.shields.io/npm/v/font-pack)](https://www.npmjs.com/package/font-pack)
+
 A tool helps to generate ttf, woff, woff2 and css file at the same time. Supports splitting font files on demand.
 
 一个可以根据常用字体格式文件，直接生成 ttf、woff 和 woff2 字体文件、以及包含该字体`font-face`定义的 css 文件。同时可以根据需要的字符集裁剪字体文件，实现类似`font-spider`的功能。

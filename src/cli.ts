@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 import cac from "cac";
-import { mkdirp } from "fs-extra";
+import fontPack from "./main";
 import { version } from "../package.json";
-import fontPack from "./lib";
 
 const cli = cac("font-pack");
 
@@ -24,11 +23,6 @@ cli
       delete options.name;
     }
 
-    if (options.outdir) {
-      await mkdirp(options.outdir);
-    }
-
-    // options.css = options.;
     files.forEach(async (file: string) => {
       try {
         await fontPack(file, options);

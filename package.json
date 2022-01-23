@@ -15,14 +15,12 @@
     "ttf",
     "woff",
     "woff2",
+    "minify",
     "convertor"
   ],
   "scripts": {
-    "build:cli": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js",
-    "build:lib": "esbuild src/lib.ts --bundle --platform=node --outfile=dist/lib.js",
     "build:type": "tsc src/lib.ts -d --emitDeclarationOnly --outDir dist",
-    "build": "npm run build:lib && npm run build:cli",
-    "test": "node dist/cli.js"
+    "build": "node build.js"
   },
   "repository": {
     "type": "git",
@@ -30,12 +28,12 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/wawoff2": "^1.0.0",
+    "@types/pako": "^1.0.3",
     "cac": "^6.7.12",
     "esbuild": "^0.14.11",
+    "fonteditor-core": "^2.1.8",
     "fs-extra": "^10.0.0",
-    "pako": "^2.0.4",
-    "wawoff2": "^2.0.0"
+    "pako": "^2.0.4"
   },
   "engines": {
     "node": ">= 12"

@@ -1,6 +1,6 @@
 {
   "name": "font-pack",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "zzzgydi",
   "license": "MIT",
   "description": "A tool helps to generate ttf, woff, woff2 and css file at the same time. Supports splitting font files on demand.",

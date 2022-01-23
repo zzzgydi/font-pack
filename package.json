@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "zzzgydi",
   "license": "MIT",
-  "description": "A font tool helps to convert ttf to woff and woff2",
+  "description": "A tool helps to generate ttf, woff, woff2 and css file at the same time. Supports splitting font files on demand.",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

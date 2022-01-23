@@ -20,8 +20,6 @@ export async function runner(tasksData: TasksData, font?: FontEditor.Font) {
     const fileName = `${task.name}.${task.type}`;
     const filePath = path.join(task.outDir, fileName);
 
-    console.log(`Converting "${fileName}"`);
-
     let content: any = null;
 
     switch (task.type) {
@@ -47,7 +45,7 @@ export async function runner(tasksData: TasksData, font?: FontEditor.Font) {
 
     await fs.writeFile(filePath, content);
 
-    console.log(`Done "${fileName}"!`);
+    console.log(`Done ${fileName}`);
   });
 
   await Promise.all(promises);

@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "dev": "node build.js -w",
-    "build": "node build.js && build:type",
+    "build": "node build.js && yarn run build:type",
     "build:type": "tsc --outfile dist/index.d.ts"
   },
   "repository": {

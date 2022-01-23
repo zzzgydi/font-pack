@@ -20,8 +20,10 @@ export async function runner(tasksData: TasksData, font?: FontEditor.Font) {
     const fileName = `${task.name}.${task.type}`;
     const filePath = path.join(task.outDir, fileName);
 
+    console.log(`Converting "${fileName}"`);
+
     let content: any = null;
-    console.log("running", task);
+
     switch (task.type) {
       case "css":
         content = await Convert.toCSS(task.name);
@@ -43,7 +45,9 @@ export async function runner(tasksData: TasksData, font?: FontEditor.Font) {
       throw new Error(`failed to convert to ${task.type}`);
     }
 
-    return fs.writeFile(filePath, content);
+    await fs.writeFile(filePath, content);
+
+    console.log(`Done "${fileName}"!`);
   });
 
   await Promise.all(promises);

@@ -22,7 +22,7 @@ export default async function fontPack(input: string, options: Options = {}) {
     type: opts.type as any,
     subset: chars,
     hinting: options.hinting,
-    compound2simple: options.tranfrom,
+    compound2simple: options.transform,
     inflate: (d) => inflate(Uint8Array.from(d)) as any, // for woff
   });
 
@@ -31,7 +31,7 @@ export default async function fontPack(input: string, options: Options = {}) {
   // do not generate css file
   if (options.css === false) types.shift();
 
-  const promises = [generator(font, types, opts)];
+  generator(font, types, opts);
 
   // should split font
   if (chars) {
@@ -44,15 +44,14 @@ export default async function fontPack(input: string, options: Options = {}) {
       type: opts.type as any,
       subset: splitChars,
       hinting: options.hinting,
-      compound2simple: options.tranfrom,
+      compound2simple: options.transform,
       inflate: (d) => inflate(Uint8Array.from(d)) as any, // for woff
     });
 
     const splitName = options.splitName || `${opts.name}-split`;
-    promises.push(generator(splitFont, types, { ...opts, name: splitName }));
-  }
 
-  await Promise.all(promises);
+    generator(splitFont, types, { ...opts, name: splitName });
+  }
 }
 
 async function generator(

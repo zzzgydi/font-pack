@@ -1,8 +1,8 @@
-let wasmPlugin = {
+const wasmPlugin = {
   name: "wasm",
   setup(build) {
-    let path = require("path");
-    let fs = require("fs");
+    const fs = require("fs");
+    const path = require("path");
 
     // Resolve ".wasm" files to a path with a namespace
     build.onResolve({ filter: /\.wasm$/ }, (args) => {
@@ -55,40 +55,43 @@ let wasmPlugin = {
   },
 };
 
-require("esbuild")
+const fs = require("fs-extra");
+const esbuild = require("esbuild");
+const watching = process.argv[2] === "-w" || process.argv[2] === "--watch";
+
+esbuild
   .build({
-    entryPoints: ["src/cli.ts"],
+    entryPoints: ["bin/cli.ts"],
     bundle: true,
+    watch: watching,
     platform: "node",
-    // watch: true,
     outfile: "dist/cli.js",
     plugins: [wasmPlugin],
   })
   .catch(() => process.exit(1));
 
-require("esbuild")
+esbuild
   .build({
-    entryPoints: ["src/main.ts"],
+    entryPoints: ["src/index.ts"],
     bundle: true,
+    watch: watching,
     platform: "node",
-    // watch: true,
-    outfile: "dist/main.js",
+    outfile: "dist/index.js",
     plugins: [wasmPlugin],
   })
   .catch(() => process.exit(1));
 
-require("esbuild")
+esbuild
   .build({
     entryPoints: ["src/worker.ts"],
     bundle: true,
+    watch: watching,
     platform: "node",
-    // watch: true,
     outfile: "dist/worker.js",
     plugins: [wasmPlugin],
   })
   .catch(() => process.exit(1));
 
-const fs = require("fs-extra");
 fs.copyFileSync(
   "./node_modules/fonteditor-core/woff2/woff2.wasm",
   "dist/woff2.wasm"

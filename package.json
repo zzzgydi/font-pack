@@ -4,9 +4,9 @@
   "author": "zzzgydi",
   "license": "MIT",
   "description": "A font tool helps to convert ttf to woff and woff2",
-  "source": "src/lib.ts",
-  "main": "dist/lib.ts",
-  "types": "dist/lib.d.ts",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "font-pack": "dist/cli.js"
   },
@@ -19,8 +19,9 @@
     "convertor"
   ],
   "scripts": {
-    "build:type": "tsc src/lib.ts -d --emitDeclarationOnly --outDir dist",
-    "build": "node build.js"
+    "dev": "node build.js -w",
+    "build": "node build.js && build:type",
+    "build:type": "tsc --outfile dist/index.d.ts"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,7 @@
     "pako": "^2.0.4"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 10"
   },
   "files": [
     "dist"

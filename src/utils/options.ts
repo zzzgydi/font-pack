@@ -55,7 +55,7 @@ export async function resolveChars(options: Options = {}) {
 
   // resolve split by chars
   if (options.splitByChars) {
-    const chars = options.splitByChars;
+    const chars = options.splitByChars.toString();
 
     for (let i = 0; i < chars.length; ++i) {
       subset.add(chars.charCodeAt(i));

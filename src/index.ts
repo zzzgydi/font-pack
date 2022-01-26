@@ -1,11 +1,9 @@
 import fs from "fs-extra";
 import path from "path";
 import { Worker } from "worker_threads";
-import { inflate } from "pako";
-import { Font, FontEditor } from "fonteditor-core";
-import { resolveChars, resolveOptions } from "./utils/options";
-import { Options, InnerOptions } from "./utils/types";
+import { Options } from "./utils/types";
 import { runner, TasksData } from "./utils/runner";
+import { resolveChars, resolveOptions } from "./utils/options";
 
 /**
  * Transform the ttf file to woff/woff2.
@@ -16,65 +14,61 @@ export default async function fontPack(input: string, options: Options = {}) {
   const opts = await resolveOptions(input, options);
   const chars = await resolveChars(options);
 
-  // create font
+  // read buffer
   const buffer = await fs.readFile(input);
-  const font = Font.create(buffer, {
-    type: opts.type as any,
-    subset: chars,
-    hinting: options.hinting,
-    compound2simple: options.transform,
-    inflate: (d) => inflate(Uint8Array.from(d)) as any, // for woff
-  });
-
   const types = ["css", "ttf", "woff", "woff2"];
 
   // do not generate css file
   if (options.css === false) types.shift();
 
-  generator(font, types, opts);
-
-  // should split font
+  // copy buffer
+  let copyBuf: Buffer = null!;
   if (chars) {
-    const fullChars = Object.keys(font.get().cmap ?? {});
-    const splitSet = new Set(fullChars.map(Number));
-    chars.forEach((char) => splitSet.delete(char));
-    const splitChars = Array.from(splitSet);
+    copyBuf = Buffer.from(buffer);
+  }
 
-    const splitFont = Font.create(buffer, {
-      type: opts.type as any,
-      subset: splitChars,
+  // generate the main font
+  // may only contain chars
+  generator({
+    buffer,
+    split: "set",
+    tasks: types.map((type) => ({ ...opts, type })),
+    fontOpts: {
+      type: opts.type, // input font type
+      subset: chars,
       hinting: options.hinting,
       compound2simple: options.transform,
-      inflate: (d) => inflate(Uint8Array.from(d)) as any, // for woff
-    });
+    },
+  });
 
+  // should split font
+  if (copyBuf) {
     const splitName = options.splitName || `${opts.name}-split`;
-
-    generator(splitFont, types, { ...opts, name: splitName });
+    generator({
+      buffer: copyBuf,
+      split: "sub",
+      tasks: types.map((type) => ({ ...opts, type, name: splitName })),
+      fontOpts: {
+        type: opts.type, // input font type
+        subset: chars,
+        hinting: options.hinting,
+        compound2simple: options.transform,
+      },
+    });
   }
 }
 
-async function generator(
-  font: FontEditor.Font,
-  types: string[],
-  options: Omit<InnerOptions, "type">
-) {
-  if (types.includes("woff2")) {
-    const buffer = font.write({ type: "ttf", toBuffer: true }) as any;
+async function generator(data: TasksData) {
+  const { tasks } = data;
+  const woff2Task = tasks.find((t) => t.type === "woff2");
 
-    const tasksData: TasksData = {
-      buffer,
-      tasks: [{ ...options, type: "woff2" }],
-    };
+  if (woff2Task) {
+    const tasksData: TasksData = { ...data, tasks: [woff2Task] };
 
     // woff2 runs on the worker
     new Worker(path.resolve(__dirname, "worker.js"), { workerData: tasksData });
   }
 
-  // use font instance directly
-  const tasks = types
-    .filter((t) => t !== "woff2")
-    .map((type) => ({ ...options, type }));
-
-  runner({ tasks }, font);
+  // generate another
+  runner({ ...data, tasks: tasks.filter((t) => t.type !== "woff2") });
 }

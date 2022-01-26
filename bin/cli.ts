@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 import cac from "cac";
-import fontPack from "../src/index";
+import path from "path";
 import { version } from "../package.json";
-import { Options } from "../src/utils/types";
+import type { Options } from "../src/utils/types";
 
 const cli = cac("font-pack");
+const fontPack = require(path.resolve(__dirname, "./index.js")).default;
 
 cli
   .command("[...files]", "font files")
